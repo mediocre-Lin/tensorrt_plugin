@@ -8,3 +8,5 @@ build/
 *.vcxproj
 externals/
 **/.DS_Store
+.vscode/
+.github/

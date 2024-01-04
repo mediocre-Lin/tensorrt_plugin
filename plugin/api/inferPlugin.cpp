@@ -33,6 +33,7 @@
 #include "gridAnchorPlugin/gridAnchorPlugin.h"
 #include "instanceNormalizationPlugin/instanceNormalizationPlugin.h"
 #include "leakyReluPlugin/lReluPlugin.h"
+#include "CustomPlugin/lCustomPlugin.h"
 #include "modulatedDeformConvPlugin/modulatedDeformConvPlugin.h"
 #include "multilevelCropAndResizePlugin/multilevelCropAndResizePlugin.h"
 #include "multilevelProposeROI/multilevelProposeROIPlugin.h"
@@ -53,7 +54,7 @@
 #include "specialSlicePlugin/specialSlicePlugin.h"
 #include "splitPlugin/split.h"
 #include "voxelGeneratorPlugin/voxelGenerator.h"
-
+#include "testAddPlugin/testAddPlugin.h"
 #include <algorithm>
 #include <array>
 #include <iostream>
@@ -196,6 +197,8 @@ extern "C"
         initializePlugin<nvinfer1::plugin::InstanceNormalizationPluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::InstanceNormalizationPluginCreatorV2>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::LReluPluginCreator>(logger, libNamespace);
+        initializePlugin<nvinfer1::plugin::CustomPluginCreator>(logger, libNamespace);
+        initializePlugin<nvinfer1::plugin::TestAddPluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::ModulatedDeformableConvPluginDynamicCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::MultilevelCropAndResizePluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::MultilevelProposeROIPluginCreator>(logger, libNamespace);

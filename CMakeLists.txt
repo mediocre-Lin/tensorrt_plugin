@@ -18,9 +18,9 @@
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 include(cmake/modules/set_ifndef.cmake)
 include(cmake/modules/find_library_create_target.cmake)
-
-set_ifndef(TRT_LIB_DIR ${CMAKE_BINARY_DIR})
-set_ifndef(TRT_OUT_DIR ${CMAKE_BINARY_DIR})
+set(TRT_LIB_DIR /home/ketsh/workspace/env/TensorRT-8.6.1.6/lib)
+set_ifndef(TRT_LIB_DIR ${CMAKE_BINARY_DIR}/out)
+set_ifndef(TRT_OUT_DIR ${CMAKE_BINARY_DIR}/out)
 
 file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/include/NvInferVersion.h" VERSION_STRINGS REGEX "#define NV_TENSORRT_.*")
 
@@ -57,7 +57,7 @@ endif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 option(BUILD_PLUGINS "Build TensorRT plugin" ON)
 option(BUILD_PARSERS "Build TensorRT parsers" ON)
-option(BUILD_SAMPLES "Build TensorRT samples" ON)
+option(BUILD_SAMPLES "Build TensorRT samples" OFF)
 
 # C++14
 set(CMAKE_CXX_STANDARD 14)
@@ -129,7 +129,6 @@ find_library(CUBLASLT_LIB cublasLt HINTS
 if(BUILD_PARSERS)
     configure_protobuf(${PROTOBUF_VERSION})
 endif()
-
 find_library_create_target(nvinfer nvinfer SHARED ${TRT_LIB_DIR})
 find_library_create_target(nvuffparser nvparsers SHARED ${TRT_LIB_DIR})
 
