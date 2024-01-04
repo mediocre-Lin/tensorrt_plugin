@@ -8,11 +8,11 @@ Nvidia Tensorrt支持许多类型的网络层，并且不断地扩展支持新�
 
 开发者可以通过Tensorrt的基类来实现自定义Plugin，下表总结了基类，不同的基类支持动态形状，不同类型/格式或网络的支持I/O。
 
-![image-20240103102956469](C:\Users\KaishuLin\AppData\Roaming\Typora\typora-user-images\image-20240103102956469.png)
+![image-20240104165411956](assets/image-20240104165411956.png)
 
 ## 2. Demo工作流程
 
-![image-20240103113735307](C:\Users\KaishuLin\AppData\Roaming\Typora\typora-user-images\image-20240103113735307.png)
+![image-20240104165422473](assets/image-20240104165422473.png)
 
 1. **pytorch**： 定义了一个包含两个输入`x`, `y`的Net，其中`test_add`操作则是**自定义的算子操作**。
 
@@ -65,22 +65,22 @@ make -j$(nproc)
 
 首先在plugin文件夹下创建testAddPlugin,内容可以直接拷贝其他plugin下，将文件名替换为自定义的plugin名
 
-![image-20240103171207077](C:\Users\KaishuLin\AppData\Roaming\Typora\typora-user-images\image-20240103171207077.png)
+![image-20240104165427389](assets/image-20240104165427389.png)
 
 其中
 
 - `class TestAddPlugin`:继承`IPluginV2DynamicExt`，用于plugin的具体实现
 - `class TestAddPluginCreator`:继承`BaseCreator`, 是插件工厂类，用于根据需求创建该plugin
 
-<img src="C:\Users\KaishuLin\AppData\Roaming\Typora\typora-user-images\image-20240103172140239.png" alt="image-20240103172140239" style="zoom: 67%;" />
+![image-20240104165432008](assets/image-20240104165432008.png)
 
 #### 3.2.1 TestAddPluginCreator
 
 我们先剖析`TestAddPluginCreator`的实现
 
-![image-20240103174532206](C:\Users\KaishuLin\AppData\Roaming\Typora\typora-user-images\image-20240103174532206.png)
+![image-20240104165434191](assets/image-20240104165434191.png)
 
-![image-20240103174838428](C:\Users\KaishuLin\AppData\Roaming\Typora\typora-user-images\image-20240103174838428.png)
+![image-20240104165435823](assets/image-20240104165435823.png)
 
 
 
@@ -522,21 +522,21 @@ pluginStatus_t testAddInference(
 
 1. 在plugin/CMakeLists.txt加入testAddplugin
 
-![image-20240104140612815](C:\Users\KaishuLin\AppData\Roaming\Typora\typora-user-images\image-20240104140612815.png)
+![image-20240104165444796](assets/image-20240104165444796.png)
 
 2. plugin/api/inferPlguin.cpp 配置initializePlugin
 
-   ![image-20240104141304045](C:\Users\KaishuLin\AppData\Roaming\Typora\typora-user-images\image-20240104141304045.png)
+   ![image-20240104165448833](assets/image-20240104165448833.png)
 
-   ![image-20240104141324703](C:\Users\KaishuLin\AppData\Roaming\Typora\typora-user-images\image-20240104141324703.png)
+   ![image-20240104165450611](assets/image-20240104165450611.png)
 
 3. plugin/common/kernels/kernel.h配置kernel函数：
 
-   ![image-20240104141542961](C:\Users\KaishuLin\AppData\Roaming\Typora\typora-user-images\image-20240104141542961.png)
+   ![image-20240104165453170](assets/image-20240104165453170.png)
 
 4. 添加onnx2trt：parsers/onnx/builtin_op_importers.cpp
 
-![image-20240104140908183](C:\Users\KaishuLin\AppData\Roaming\Typora\typora-user-images\image-20240104140908183.png)
+![image-20240104165455511](assets/image-20240104165455511.png)
 
 ## 4. **Running Edited ONNX**
 
@@ -544,11 +544,11 @@ pluginStatus_t testAddInference(
 
 - 使用官方的tensorRT的动态库，报错
 
-![1704350591441](C:\Users\KaishuLin\Documents\WeChat Files\wxid_yrc15qstpi5j32\FileStorage\Temp\1704350591441.png)
+![image-20240104165457777](assets/image-20240104165457777.png)
 
 - 将编译TensorRT项目编译的动态库拷贝到tensorRT lib中，就可以在TensorRT运行我们的带有TestAdd节点的onnx文件了
 
-![image-20240104144748824](C:\Users\KaishuLin\AppData\Roaming\Typora\typora-user-images\image-20240104144748824.png)
+![image-20240104165503823](assets/image-20240104165503823.png)
 
 
 
